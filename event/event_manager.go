@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/lokks307/go-util/djson"
-	log "github.com/sirupsen/logrus"
+	"github.com/lokks307/djson/v2"
+	"github.com/sirupsen/logrus"
 )
 
 const mNameEvt = "[EvtMan] "
@@ -15,7 +15,7 @@ type AEvent struct {
 	Data     interface{}
 	DataInts []int
 	DataStrs []string
-	DataJson *djson.DJSON
+	DataJson *djson.JSON
 }
 
 type EvtStage uint8
@@ -123,13 +123,13 @@ func (m *EventManager) RemoveSubscribe(skey string) {
 func (m *EventManager) Run() error {
 
 	if m.stage == STAGE_NULL || m.stage == STAGE_READY {
-		log.Error(mNameEvt, ERROR_EVT_FAIL_RUN)
+		logrus.Error(mNameEvt, ERROR_EVT_FAIL_RUN)
 		return ERROR_EVT_FAIL_RUN
 	}
 
 	go func() {
 
-		log.Info(mNameEvt, "started")
+		logrus.Info(mNameEvt, "started")
 		m.stage = STAGE_READY
 
 		defer func() {
@@ -143,7 +143,7 @@ func (m *EventManager) Run() error {
 			case <-m.cancelChan:
 				return
 			case oneEvent := <-Bus:
-				log.Trace(mNameEvt, "new event type=", oneEvent.Type)
+				logrus.Trace(mNameEvt, "new event type=", oneEvent.Type)
 
 				for idx := range m.combiner {
 					m.combiner[idx].Listen(&oneEvent)

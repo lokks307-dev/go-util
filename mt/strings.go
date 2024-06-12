@@ -157,25 +157,37 @@ func WrapCrmIpAddrSocketNoScheme(ipAddr string) string {
 	return ipAddr + ":8081"
 }
 
-func ToInt(s string) int {
+func ToInt(s string, dd ...int) int {
+	var defv int
+	if len(dd) > 0 {
+		defv = dd[0]
+	}
 	if ival, err := strconv.ParseInt(s, 10, 64); err != nil {
-		return 0
+		return defv
 	} else {
 		return int(ival)
 	}
 }
 
-func ToInt32(s string) int32 {
+func ToInt32(s string, dd ...int32) int32 {
+	var defv int32
+	if len(dd) > 0 {
+		defv = dd[0]
+	}
 	if ival, err := strconv.ParseInt(s, 10, 64); err != nil {
-		return 0
+		return defv
 	} else {
 		return int32(ival)
 	}
 }
 
-func ToInt64(s string) int64 {
+func ToInt64(s string, dd ...int64) int64 {
+	var defv int64
+	if len(dd) > 0 {
+		defv = dd[0]
+	}
 	if ival, err := strconv.ParseInt(s, 10, 64); err != nil {
-		return 0
+		return defv
 	} else {
 		return ival
 	}

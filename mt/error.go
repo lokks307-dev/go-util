@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 func buildLogString(fileName string, line int, ok bool, msgIn []interface{}) string {
@@ -41,6 +43,13 @@ func Error(msgIn ...interface{}) error {
 
 	_, filename, line, ok := runtime.Caller(1)
 	return errors.New(buildLogString(filename, line, ok, msgIn))
+}
+
+func ErrorOut(msgIn ...interface{}) {
+	_, filename, line, ok := runtime.Caller(1)
+	msg := buildLogString(filename, line, ok, msgIn)
+
+	logrus.Error(msg)
 }
 
 func Trace(msgIn ...interface{}) string {

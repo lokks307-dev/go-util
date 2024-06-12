@@ -72,11 +72,12 @@ func UnixToMonthInt(unixt int64, loc *time.Location) int {
 	return TimeToMonthInt(time.Unix(unixt, 0), loc)
 }
 
-func DayIntToTime(tdint int, loc *time.Location) (time.Time, error) {
+func DayIntToTime[T int | int32 | int64](tdint T, loc *time.Location) (time.Time, error) {
 	if loc == nil {
 		loc = LocalLoc
 	}
-	return time.ParseInLocation("20060102", strconv.Itoa(tdint), loc)
+
+	return time.ParseInLocation("20060102", strconv.Itoa(int(tdint)), loc)
 }
 
 func MinIntToTime(mdint int64, loc *time.Location) (time.Time, error) {
@@ -216,16 +217,20 @@ func HmsToSec(hhmmss string) int {
 	return h*60*60 + m*60 + s
 }
 
-func SecToHms(sec int) string {
-	h := (sec / 3600) % 24
-	m := (sec % 3600) / 60
-	s := sec % 60
+func SecToHms[T int | int32 | int64 | uint | uint32 | uint64](sec T) string {
+	h, m, s := SecToHMS(sec)
 
 	if s == 0 {
 		return fmt.Sprintf("%02d:%02d", h, m)
 	}
 
 	return fmt.Sprintf("%02d:%02d:%02d", h, m, s)
+}
+
+func SecToHMS[T int | int32 | int64 | uint | uint32 | uint64](s T) (int, int, int) {
+	h, hq := Divide(s, 3600)
+	m, s := Divide(hq, 60)
+	return int(h % 24), int(m), int(s)
 }
 
 func IntSliceToHmsSlice(hm []int) []string {

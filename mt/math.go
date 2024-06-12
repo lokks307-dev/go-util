@@ -1,6 +1,9 @@
 package mt
 
-import "reflect"
+import (
+	"math"
+	"reflect"
+)
 
 func Max[T numbers](a, b T) T {
 	if a > b {
@@ -87,4 +90,21 @@ func AbsInt64(v int64) int64 {
 	}
 
 	return v
+}
+
+func IsAlmostEqual[T float32 | float64](a, b T) bool {
+	return math.Abs(float64(a-b)) <= 1e-9
+}
+
+func Average[T numbers](ss []T) (T, int) {
+	if len(ss) == 0 {
+		return 0, 0
+	}
+
+	var ts float64
+	for _, s := range ss {
+		ts += float64(s)
+	}
+
+	return T(ts / float64(len(ss))), len(ss)
 }
