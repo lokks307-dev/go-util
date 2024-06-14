@@ -3,6 +3,7 @@ package mt
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -16,6 +17,26 @@ import (
 
 const NET_TIMEOUT = 10
 const CRM_NET_TIMEOUT = 300
+
+func MakePath(base string, dd ...string) string {
+	format := strings.Repeat("/%s", len(dd)+1)
+	args := make([]interface{}, 0)
+	args = append(args, url.QueryEscape(base))
+	for idx := range dd {
+		args = append(args, url.QueryEscape(dd[idx]))
+	}
+	return fmt.Sprintf(format, args...)
+}
+
+func MakePathForCareEase(base string, dd ...string) string {
+	format := strings.Repeat("/%s", len(dd)+1)
+	args := make([]interface{}, 0)
+	args = append(args, base)
+	for idx := range dd {
+		args = append(args, dd[idx])
+	}
+	return fmt.Sprintf(format, args...)
+}
 
 func MakeUrl(base string, subpath ...string) string {
 	u, _ := url.Parse(base)

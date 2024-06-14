@@ -248,3 +248,28 @@ func TrueOr[T any](t bool, a T, b T) T {
 	}
 	return b
 }
+
+func NoneEmptyMatch(s string, c string) bool {
+	if s == "" || c == "" {
+		return false
+	}
+
+	return (s == c)
+}
+
+func IsSameNonEmptyString(v1, v2 string) bool {
+	if v1 == "" && v2 == "" {
+		return false
+	}
+
+	return v1 == v2
+}
+
+func GetUpdatedString(olds, news string) string {
+	newstr := strings.TrimSpace(news)
+	if newstr != "" && newstr != olds {
+		return newstr
+	}
+
+	return olds
+}

@@ -300,14 +300,14 @@ func PtrJsonToBool(d *djson.JSON, key string) *bool {
 	return nil
 }
 
-func PtrIntPositiveOrNil[T intergers](a T) *T {
+func PtrIntPositiveOrNil[T integers](a T) *T {
 	if a <= 0 {
 		return nil
 	}
 	return &a
 }
 
-func PtrIntNonZeroOrNil[T intergers](a T) *T {
+func PtrIntNonZeroOrNil[T integers](a T) *T {
 	if a == 0 {
 		return nil
 	}

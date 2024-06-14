@@ -26,3 +26,7 @@ func (m *IntSet) ToSlice() []int64 {
 	}
 	return ret
 }
+
+func IsOptionSet(opt []bool) bool {
+	return len(opt) > 0 && opt[0]
+}

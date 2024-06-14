@@ -1,5 +1,33 @@
 package mt
 
+func FindIndex[T comparable](slice []T, item T) int {
+	for i := range slice {
+		if slice[i] == item {
+			return i
+		}
+	}
+	return -1
+}
+
+func FindIndexStringSlice(slice []string, item string) int {
+	return FindIndex(slice, item)
+}
+
+func FindIndexInt64Slice(slice []int64, item int64) int {
+	return FindIndex(slice, item)
+}
+
+func FiltOutInt64Slice(slice []int64, item int64) []int64 {
+	nslice := make([]int64, 0)
+	for i := range slice {
+		if slice[i] != item {
+			nslice = append(nslice, slice[i])
+		}
+	}
+
+	return nslice
+}
+
 func IsSameOrderSlice[T comparable](a, b []T) bool {
 	if len(a) != len(b) {
 		return false

@@ -21,7 +21,7 @@ func Min[T numbers](a, b T) T {
 	return a
 }
 
-func Pow[T intergers](base, exp T) T {
+func Pow[T integers](base, exp T) T {
 	var result T = 1
 	for {
 		if exp&1 == 1 {
@@ -37,7 +37,7 @@ func Pow[T intergers](base, exp T) T {
 	return result
 }
 
-func Divide[T intergers](base, divider T) (T, T) {
+func Divide[T integers](base, divider T) (T, T) {
 	return base / divider, base % divider
 }
 

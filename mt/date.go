@@ -3,6 +3,7 @@ package mt
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -10,6 +11,22 @@ const (
 	ONE_DAY_SEC  = 86400
 	ONE_HOUR_SEC = 3600
 )
+
+var KoLoc *time.Location
+var LocalLoc *time.Location
+
+func init() {
+	KoLoc = time.FixedZone("", 9*60*60)
+
+	var err error
+	LocalLoc, err = time.LoadLocation("Local")
+	if err != nil {
+		LocalLoc = time.UTC
+	}
+}
+func SetLocalLocToKoLoc() {
+	LocalLoc = KoLoc
+}
 
 func GetTime(ts int64) time.Time {
 	return time.Unix(ts, 0)
@@ -329,4 +346,45 @@ func TimeDayRangeFunc(a, b time.Time, x func(time.Time)) {
 	for td := a; td.Before(b); td = td.AddDate(0, 0, 1) {
 		x(td)
 	}
+}
+
+func WithInTime(b, t, m int64) bool {
+	return AbsInt64(b-t) <= m
+}
+
+func SlotNoToTimeString(slotNo int) string {
+	hourInt := int(slotNo / 2)
+	minInt := 0
+	if slotNo%2 != 0 {
+		minInt = 30
+	}
+
+	return fmt.Sprintf("%02d:%02d", hourInt, minInt)
+}
+
+func TimeStringToSlotNo(hhmm string) int {
+	splits := strings.Split(hhmm, ":")
+	if len(splits) != 2 {
+		return 0
+	}
+
+	hourInt, err := strconv.Atoi(splits[0])
+	if err != nil {
+		return 0
+	}
+
+	carry := 0
+	if splits[1] == "30" {
+		carry = 1
+	}
+
+	return hourInt*2 + carry
+}
+
+func TimestampToSlotNo(stamp int64, loc *time.Location) int {
+	t := time.Unix(stamp, 0).In(loc)
+	if t.Minute() >= 30 {
+		return t.Hour()*2 + 1
+	}
+	return t.Hour() * 2
 }

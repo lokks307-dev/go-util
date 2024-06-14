@@ -1,10 +1,10 @@
 package mt
 
 import (
+	"encoding/base64"
+	"encoding/hex"
 	"strconv"
 	"strings"
-
-	"github.com/lokks307/djson/v2"
 )
 
 func StringSliceToAnySlice(ss []string) []interface{} {
@@ -16,7 +16,7 @@ func StringSliceToAnySlice(ss []string) []interface{} {
 	return is
 }
 
-func IntSliceToAnySlice[T intergers](ss []T) []interface{} {
+func IntSliceToAnySlice[T integers](ss []T) []interface{} {
 	is := make([]interface{}, len(ss))
 	for i, v := range ss {
 		is[i] = v
@@ -39,23 +39,7 @@ func MapKeyToInt64Slice(m map[int64]bool) []int64 {
 	return l
 }
 
-func JsonStringToStringSlice(ss string) []string {
-	dd := djson.New().Parse(ss)
-	if dd.IsArray() {
-		return djson.ArrayJsonToStringSlice(dd)
-	}
-	return []string{}
-}
-
-func JsonStringToIntSlice(ss string) []int {
-	dd := djson.New().Parse(ss)
-	if dd.IsArray() {
-		return djson.JsonToIntSlice(dd)
-	}
-	return []int{}
-}
-
-func ToIntSlice[T intergers](ss []T) []int {
+func ToIntSlice[T integers](ss []T) []int {
 	r := make([]int, 0)
 	for _, s := range ss {
 		r = append(r, int(s))
@@ -64,7 +48,7 @@ func ToIntSlice[T intergers](ss []T) []int {
 	return r
 }
 
-func ToInt8Slice[T intergers](ss []T) []int8 {
+func ToInt8Slice[T integers](ss []T) []int8 {
 	r := make([]int8, 0)
 	for _, s := range ss {
 		r = append(r, int8(s))
@@ -73,7 +57,7 @@ func ToInt8Slice[T intergers](ss []T) []int8 {
 	return r
 }
 
-func ToInt32Slice[T intergers](ss []T) []int32 {
+func ToInt32Slice[T integers](ss []T) []int32 {
 	r := make([]int32, 0)
 	for _, s := range ss {
 		r = append(r, int32(s))
@@ -82,7 +66,7 @@ func ToInt32Slice[T intergers](ss []T) []int32 {
 	return r
 }
 
-func ToInt64Slice[T intergers](ss []T) []int64 {
+func ToInt64Slice[T integers](ss []T) []int64 {
 	r := make([]int64, 0)
 	for _, s := range ss {
 		r = append(r, int64(s))
@@ -109,15 +93,24 @@ func ToFloat64Slice[T numbers](ss []T) []float64 {
 	return r
 }
 
-func ToString[T intergers](v T) string {
+func ToString[T integers](v T) string {
 	return strconv.FormatInt(int64(v), 10)
 }
 
-func ToStringSlice[T intergers](ss []T) []string {
+func ToStringSlice[T integers](ss []T) []string {
 	r := make([]string, len(ss))
 	for i, s := range ss {
 		r[i] = ToString(s)
 	}
 
 	return r
+}
+
+func B64toHex(v string) string {
+	p, err := base64.StdEncoding.DecodeString(v)
+	if err != nil {
+		return ""
+	}
+	h := hex.EncodeToString(p)
+	return h
 }
