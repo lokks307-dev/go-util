@@ -273,3 +273,59 @@ func GetUpdatedString(olds, news string) string {
 
 	return olds
 }
+
+func Unescape(raw string) string {
+	return strings.Replace(raw, `\\u`, `\u`, -1)
+}
+
+func UnescapeUnicodeCharactersInJSON(raw string) string {
+	str, err := strconv.Unquote(strings.Replace(strconv.Quote(raw), `\\u`, `\u`, -1))
+	if err != nil {
+		return ""
+	}
+	return str
+}
+
+func EmptyOr(aa ...interface{}) string {
+	r := ""
+
+	for _, a := range aa {
+		switch t := a.(type) {
+		case null.String:
+			if t.Valid {
+				r = t.String
+			}
+		case string:
+			r = t
+		case *string:
+			if t != nil {
+				r = *t
+			}
+		}
+
+		if r != "" {
+			return r
+		}
+
+	}
+
+	return ""
+}
+
+func StringToInt64Slice(v []string) []int64 {
+	vv := make([]int64, 0)
+
+	for i := range v {
+		if conv, err := strconv.ParseInt(v[i], 10, 64); err == nil && conv > 0 {
+			vv = append(vv, conv)
+		}
+	}
+
+	return vv
+}
+
+func ReplaceAtIndex(in string, r rune, i int) string {
+	out := []rune(in)
+	out[i] = r
+	return string(out)
+}

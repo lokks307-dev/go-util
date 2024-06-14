@@ -1,6 +1,11 @@
 package mt
 
-import "github.com/lokks307/djson/v2"
+import (
+	"time"
+
+	"github.com/lokks307/djson/v2"
+	"github.com/volatiletech/null/v8"
+)
 
 type NullMap struct {
 	Valid bool
@@ -98,4 +103,98 @@ func NullStringSliceFromJson(ss *djson.JSON) NullStringSlice {
 	}
 
 	return NewNullStringSlice(s, true)
+}
+
+func GetTimeUnix(s null.Time) int64 {
+	if s.Valid {
+		return s.Time.Unix()
+	}
+
+	return 0
+}
+
+func GetBool(s null.Bool) bool {
+	if s.Valid {
+		return s.Bool
+	}
+
+	return false
+}
+
+func GetString(s null.String) string {
+	if s.Valid {
+		return s.String
+	}
+
+	return ""
+}
+
+func GetFloat(s interface{}) float64 {
+	switch t := s.(type) {
+	case null.Float32:
+		if t.Valid {
+			return float64(t.Float32)
+		}
+	case null.Float64:
+		if t.Valid {
+			return t.Float64
+		}
+	}
+
+	return 0
+}
+
+func GetInt(s interface{}) int64 {
+	switch t := s.(type) {
+	case null.Uint:
+		if t.Valid {
+			return int64(t.Uint)
+		}
+	case null.Uint8:
+		if t.Valid {
+			return int64(t.Uint8)
+		}
+	case null.Uint16:
+		if t.Valid {
+			return int64(t.Uint16)
+		}
+	case null.Uint32:
+		if t.Valid {
+			return int64(t.Uint32)
+		}
+	case null.Uint64:
+		if t.Valid {
+			return int64(t.Uint64)
+		}
+	case null.Int:
+		if t.Valid {
+			return int64(t.Int)
+		}
+	case null.Int8:
+		if t.Valid {
+			return int64(t.Int8)
+		}
+	case null.Int16:
+		if t.Valid {
+			return int64(t.Int16)
+		}
+	case null.Int32:
+		if t.Valid {
+			return int64(t.Int32)
+		}
+	case null.Int64:
+		if t.Valid {
+			return t.Int64
+		}
+	}
+
+	return 0
+}
+
+func GetUpdatedUnix(createdAt time.Time, updatedAt null.Time) int64 {
+	if updatedAt.Valid {
+		return updatedAt.Time.Unix()
+	}
+
+	return createdAt.Unix()
 }

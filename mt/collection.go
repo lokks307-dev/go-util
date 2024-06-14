@@ -1,5 +1,11 @@
 package mt
 
+import (
+	"reflect"
+
+	"github.com/volatiletech/null/v8"
+)
+
 func Index[T comparable](vs []T, t T) int {
 	for i, v := range vs {
 		if v == t {
@@ -53,6 +59,58 @@ func IsIn[T comparable](v T, opts ...T) bool {
 	for _, e := range opts {
 		if e == v {
 			return true
+		}
+	}
+
+	return false
+}
+
+func IsInEnum(x interface{}, c interface{}) bool {
+
+	xx := reflect.ValueOf(x)
+	cc := reflect.ValueOf(c)
+
+	nullInt, nullIntOk := NullToInt64(c)
+	ccc, nullStrOk := c.(null.String)
+	nullStr := ccc.String
+
+	if xx.Kind() == reflect.Ptr {
+		xx = xx.Elem()
+	}
+
+	if xx.Kind() != reflect.Struct {
+		return false
+	}
+
+	for i := 0; i < xx.NumField(); i++ {
+		xxx := xx.Field(i)
+
+		if xxx.Kind() == reflect.Struct {
+			continue
+		}
+
+		if xxx.Kind() == reflect.String {
+			if nullStrOk {
+				if xxx.String() == nullStr {
+					return true
+				}
+			} else {
+				if xxx.String() == cc.String() {
+					return true
+				}
+			}
+		} else {
+			if xxx.CanInt() {
+				if nullIntOk {
+					if xxx.Int() == nullInt {
+						return true
+					}
+				} else {
+					if cc.CanInt() && xxx.Int() == cc.Int() {
+						return true
+					}
+				}
+			}
 		}
 	}
 

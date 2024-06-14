@@ -1,6 +1,8 @@
 package mt
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -55,4 +57,52 @@ func BuildParamSqlite(num int) string {
 	}
 
 	return strings.Join(paramRaw, ",")
+}
+
+func BatchSliceTask[T integers | string](numOnce int, ss []T, taskFunc func([]T) error, abortOnError bool) {
+
+	lenSlice := len(ss)
+	for i := 0; i < lenSlice; i += numOnce {
+		sliceBegin := i
+		sliceEnd := i + numOnce
+		if sliceEnd > lenSlice {
+			sliceBegin = lenSlice
+		}
+
+		err := taskFunc(ss[sliceBegin:sliceEnd])
+		if err != nil {
+			if abortOnError {
+				break
+			}
+		}
+	}
+}
+
+func BatchSliceTaskWithTx[T integers | string](numOnce int, dbconn *sql.DB, ss []T, taskFunc func(*sql.Tx, []T) error) error {
+	tx, err := dbconn.BeginTx(context.Background(), nil)
+	if err != nil {
+		return err
+	}
+
+	lenSlice := len(ss)
+	for i := 0; i < lenSlice; i += numOnce {
+		sliceBegin := i
+		sliceEnd := i + numOnce
+		if sliceEnd > lenSlice {
+			sliceBegin = lenSlice
+		}
+
+		err := taskFunc(tx, ss[sliceBegin:sliceEnd])
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	if err = tx.Commit(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return nil
 }

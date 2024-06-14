@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-const (
-	ONE_DAY_SEC  = 86400
-	ONE_HOUR_SEC = 3600
-)
-
 var KoLoc *time.Location
 var LocalLoc *time.Location
 
@@ -387,4 +382,42 @@ func TimestampToSlotNo(stamp int64, loc *time.Location) int {
 		return t.Hour()*2 + 1
 	}
 	return t.Hour() * 2
+}
+
+func GetBirthdateFromAge(age int, onTime time.Time) time.Time {
+	return onTime.AddDate(-age, 0, 0)
+}
+
+func GetDoBIntFromAge(age int, onTime time.Time) int {
+	t := GetBirthdateFromAge(age, onTime)
+	return TimeToDayInt(t, onTime.Location())
+}
+
+func GetMinutesBetweenHHmmInt(start, end int) int {
+	diff := end - start
+	if diff < 0 {
+		return 0
+	}
+
+	return (diff/100)*60 + (diff % 100)
+}
+
+func DateTimeIntToTime[T int | int32 | int64](dateInt, HHmmInt T, loc *time.Location) (time.Time, error) {
+	dateConv, err := DayIntToTime(dateInt, loc)
+	if err != nil {
+		return dateConv, err
+	}
+
+	hour := time.Duration(HHmmInt / 100)
+	minute := time.Duration(HHmmInt % 100)
+
+	return dateConv.Add(hour*time.Hour + minute*time.Minute), nil
+}
+
+func TimeToTimeInt(t time.Time, loc *time.Location) int {
+	if loc == nil {
+		loc = LocalLoc
+	}
+
+	return t.In(loc).Hour()*100 + t.In(loc).Minute()
 }

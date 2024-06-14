@@ -12,6 +12,8 @@ import (
 	"errors"
 	"log"
 	"math"
+	"math/big"
+	"strconv"
 
 	"github.com/lokks307/go-util/bytesbuilder"
 	"lukechampine.com/blake3"
@@ -222,4 +224,56 @@ func Blake3(b ...interface{}) string {
 	bb.Append(b...)
 	hash := blake3.Sum256(bb.GetBytes())
 	return hex.EncodeToString(hash[:])
+}
+
+func GetRandInt64(max int64) int64 {
+	r, e := rand.Int(rand.Reader, big.NewInt(max))
+	if e != nil || r == nil {
+		return 0
+	}
+
+	return r.Int64()
+}
+
+const (
+	LETTERS = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+)
+
+func PasswordGenerator(plen int) string {
+	pwd := ""
+	lenLetter := len(LETTERS)
+
+	rs := make([]byte, plen)
+	_, _ = rand.Read(rs)
+
+	for i := 0; i < plen; i++ {
+		pos := int(rs[i]) % lenLetter
+		pwd += string(LETTERS[pos])
+	}
+
+	return pwd
+}
+
+func GenRandomHex(n int) string {
+	b := make([]byte, n/2)
+	_, _ = rand.Read(b)
+	return hex.EncodeToString(b)
+}
+
+func HashPassword(pw, salt string) string {
+	comb := []byte(pw + salt)
+	sum := sha256.Sum256(comb)
+
+	return hex.EncodeToString(sum[:])
+}
+
+func VerifyPassword(src, target, salt string) bool {
+	return target == HashPassword(src, salt)
+}
+
+func MakeUID(email string, time int64) string {
+	comb := []byte(email + strconv.FormatInt(time, 10))
+	uid := sha256.Sum256(comb)
+
+	return hex.EncodeToString(uid[:])
 }

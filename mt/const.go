@@ -11,3 +11,13 @@ type integers interface {
 const (
 	JS_MAX_INT int64 = 9007199254740991
 )
+
+const (
+	ONE_WEEK_MS = 604800_000
+	ONE_DAY_MS  = 86400_000
+	ONE_HOUR_MS = 3600_000
+
+	ONE_WEEK_SEC = 604800
+	ONE_DAY_SEC  = 86400
+	ONE_HOUR_SEC = 3600
+)
