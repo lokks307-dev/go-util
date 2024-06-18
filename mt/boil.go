@@ -5,9 +5,17 @@ import (
 
 	"github.com/lokks307/djson/v2"
 	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // models.M (in sqlboiler) is equal to map[string]interface{}
+
+func OrderByCol(colName string, isAsc bool) qm.QueryMod {
+	if isAsc {
+		return qm.OrderBy(colName + " ASC")
+	}
+	return qm.OrderBy(colName + " DESC")
+}
 
 func assignWithEval[T any](m map[string]interface{}, key string, v T, ev func(c interface{}) bool) {
 	if ev == nil {

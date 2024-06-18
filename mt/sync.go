@@ -2,8 +2,6 @@ package mt
 
 import (
 	"sync"
-
-	"github.com/lokks307/micro-saas-phr/lib/flag"
 )
 
 type WaitGroup struct {
@@ -75,13 +73,13 @@ func (m *WaitGroup) Wait() {
 
 type WaitMeet struct {
 	wc chan bool
-	f  *flag.AtomicBool
+	f  *AtomicBool
 }
 
 func NewWaitMeet() *WaitMeet {
 	return &WaitMeet{
 		wc: make(chan bool, 2),
-		f:  flag.New(),
+		f:  NewFlag(),
 	}
 }
 

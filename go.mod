@@ -5,15 +5,14 @@ go 1.20
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/btcsuite/btcutil v1.0.2
-	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/lokks307/djson/v2 v2.0.7
-	github.com/lokks307/micro-saas-phr v0.0.0-20240610100010-964b04eaf13c
 	github.com/lokks307/pkcs8 v0.0.0-20191211023012-cfc7eaf96ee1
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0
 	github.com/subchen/go-trylock/v2 v2.0.0
 	github.com/volatiletech/null/v8 v8.1.2
+	github.com/volatiletech/sqlboiler/v4 v4.14.2
 	golang.org/x/crypto v0.13.0
 	golang.org/x/sys v0.20.0
 	lukechampine.com/blake3 v1.3.0
@@ -31,6 +30,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
+	github.com/spf13/cast v1.5.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/volatiletech/inflect v0.0.1 // indirect
