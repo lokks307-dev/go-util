@@ -12,7 +12,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/subchen/go-trylock/v2 v2.0.0
 	github.com/volatiletech/null/v8 v8.1.2
-	github.com/volatiletech/sqlboiler/v4 v4.14.2
+	github.com/volatiletech/sqlboiler/v4 v4.16.2
 	golang.org/x/crypto v0.13.0
 	golang.org/x/sys v0.20.0
 	lukechampine.com/blake3 v1.3.0
@@ -35,7 +35,7 @@ require (
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/volatiletech/inflect v0.0.1 // indirect
 	github.com/volatiletech/randomize v0.0.1 // indirect
-	github.com/volatiletech/strmangle v0.0.4 // indirect
+	github.com/volatiletech/strmangle v0.0.6 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

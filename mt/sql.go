@@ -215,7 +215,7 @@ func GetBulkInsertQuery(tableName string, cols []string, vals [][]interface{}) s
 
 	valStrSlice := make([]string, 0)
 	for i := range vals {
-		valStrSlice = append(valStrSlice, ToSqlValStr(vals[i]))
+		valStrSlice = append(valStrSlice, ToSqlValStr(vals[i]...))
 	}
 
 	return fmt.Sprintf("INSERT IGNORE INTO %s %s VALUES %s", tableName, colsStmt, strings.Join(valStrSlice, ","))
