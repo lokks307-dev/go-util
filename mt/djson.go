@@ -450,11 +450,6 @@ func RemoveDuplicatedTag(sliceList *djson.JSON) *djson.JSON {
 	return list
 }
 
-func AddCPUTagForNotEnrolledUser(id string) string {
-	tag := "CPU_"
-	return tag + id
-}
-
 func MustGetStringOfSlice(x string) string {
 	d := djson.New().Parse(x)
 	if !d.IsArray() {
@@ -467,6 +462,91 @@ func MustGetStringOfSlice(x string) string {
 func IsEmptyJsonString(x string) bool {
 	xx := strings.ReplaceAll(x, " ", "")
 	return IsIn(xx, "", "[]", "{}")
+}
+
+func JsonPtrFloat32(d *djson.JSON, key string) *float32 {
+	return JsonToPtrFloat32(d, key)
+}
+
+func JsonToPtrFloat32(d *djson.JSON, key string, def ...float32) *float32 {
+	defx := ToFloat64Slice(def)
+	return PtrFloat32(JsonToPtrFloat64(d, key, defx...))
+}
+
+func JsonPtrFloat64(d *djson.JSON, key string) *float64 {
+	return JsonToPtrFloat64(d, key)
+}
+
+func JsonToPtrFloat64(d *djson.JSON, key string, def ...float64) *float64 {
+	if d == nil || key == "" {
+		return nil
+	}
+
+	if d.HasKey(key) {
+		return PtrFloat64(d.Float(key))
+	}
+
+	if len(def) > 0 {
+		return &def[0]
+	} else {
+		return nil
+	}
+}
+
+func JsonPtrInt(d *djson.JSON, key string) *int {
+	return JsonToPtrInt(d, key)
+}
+
+func JsonToPtrInt(d *djson.JSON, key string, def ...int) *int {
+	defx := ToInt64Slice(def)
+	return PtrInt(JsonToPtrInt64(d, key, defx...))
+}
+
+func JsonPtrInt8(d *djson.JSON, key string) *int8 {
+	return JsonToPtrInt8(d, key)
+}
+
+func JsonToPtrInt8(d *djson.JSON, key string, def ...int8) *int8 {
+	defx := ToInt64Slice(def)
+	return PtrInt8(JsonToPtrInt64(d, key, defx...))
+}
+
+func JsonPtrInt16(d *djson.JSON, key string) *int16 {
+	return JsonToPtrInt16(d, key)
+}
+
+func JsonToPtrInt16(d *djson.JSON, key string, def ...int16) *int16 {
+	defx := ToInt64Slice(def)
+	return PtrInt16(JsonToPtrInt64(d, key, defx...))
+}
+
+func JsonPtrInt32(d *djson.JSON, key string) *int32 {
+	return JsonToPtrInt32(d, key)
+}
+
+func JsonToPtrInt32(d *djson.JSON, key string, def ...int32) *int32 {
+	defx := ToInt64Slice(def)
+	return PtrInt32(JsonToPtrInt64(d, key, defx...))
+}
+
+func JsonPtrInt64(d *djson.JSON, key string) *int64 {
+	return JsonToPtrInt64(d, key)
+}
+
+func JsonToPtrInt64(d *djson.JSON, key string, def ...int64) *int64 {
+	if d == nil || key == "" {
+		return nil
+	}
+
+	if d.HasKey(key) {
+		return PtrInt64(d.Int(key))
+	}
+
+	if len(def) > 0 {
+		return &def[0]
+	} else {
+		return nil
+	}
 }
 
 func JsonPtrStr(d *djson.JSON, key ...string) *string {
@@ -485,58 +565,147 @@ func JsonPtrStr(d *djson.JSON, key ...string) *string {
 	return nil
 }
 
+func JsonToPtrStr(d *djson.JSON, key string, def ...string) *string {
+	if d == nil || key == "" {
+		return nil
+	}
+
+	if d.HasKey(key) {
+		return PtrStr(d.String(key, ""))
+	}
+
+	if len(def) > 0 {
+		return &def[0]
+	} else {
+		return nil
+	}
+}
+
 func JsonPtrBool(d *djson.JSON, key string) *bool {
-	if d == nil || !d.HasKey(key) {
-		return nil
-	}
-	return PtrBool(d.Bool(key))
+	return JsonToPtrBool(d, key)
 }
 
-func JsonPtrFloat64(d *djson.JSON, key string) *float64 {
-	if d == nil || !d.HasKey(key) {
+func JsonToPtrBool(d *djson.JSON, key string, def ...bool) *bool {
+	if d == nil || key == "" {
 		return nil
 	}
-	return PtrFloat64(d.Float(key))
-}
 
-func JsonPtrFloat32(d *djson.JSON, key string) *float32 {
-	if d == nil || !d.HasKey(key) {
-		return nil
+	if d.HasKey(key) {
+		return PtrBool(d.Bool(key))
 	}
-	return PtrFloat32(d.Float(key))
-}
 
-func JsonPtrInt(d *djson.JSON, key string) *int {
-	if d == nil || !d.HasKey(key) {
+	if len(def) > 0 {
+		return &def[0]
+	} else {
 		return nil
 	}
-	return PtrInt(d.Int(key))
-}
-
-func JsonPtrInt64(d *djson.JSON, key string) *int64 {
-	if d == nil || !d.HasKey(key) {
-		return nil
-	}
-	return PtrInt64(d.Int(key))
-}
-
-func JsonPtrInt8(d *djson.JSON, key string) *int8 {
-	if d == nil || !d.HasKey(key) {
-		return nil
-	}
-	return PtrInt8(d.Int(key))
 }
 
 func JsonPtrArray(d *djson.JSON, key string) *djson.JSON {
 	if d == nil || !d.HasKey(key) {
 		return nil
 	}
-	return djson.MustGetArray(d, key)
+
+	arr, ok := d.Array(key)
+	if !ok || !arr.IsArray() {
+		return nil
+	}
+
+	return arr
 }
 
 func JsonPtrObject(d *djson.JSON, key string) *djson.JSON {
 	if d == nil || !d.HasKey(key) {
 		return nil
 	}
-	return djson.MustGetObject(d, key)
+
+	obj, ok := d.Object(key)
+	if !ok || !obj.IsObject() {
+		return nil
+	}
+
+	return obj
+}
+
+func IsZeroInt64(d *int64) bool {
+	return d == nil || *d == 0
+}
+
+func JsonToPtrStrIfNotNull(d *djson.JSON, key string, def ...string) *string {
+	if d == nil || key == "" {
+		return nil
+	}
+
+	if len(def) > 0 {
+		if d.String(key, "") == "null" {
+			return &def[0]
+		}
+	}
+	if d.HasKey(key) {
+		return PtrStr(d.String(key))
+	}
+
+	return nil
+}
+
+func JsonToPtrInt32IfNotNull(d *djson.JSON, key string, def ...int32) *int32 {
+	if d == nil || key == "" {
+		return nil
+	}
+
+	if len(def) > 0 {
+		if d.String(key, "") == "null" {
+			return &def[0]
+		}
+	}
+	if d.HasKey(key) {
+		return PtrInt32(d.Int(key))
+	}
+
+	return nil
+}
+
+func JsonToPtrInt64IfNotNull(d *djson.JSON, key string, def ...int64) *int64 {
+	if d == nil || key == "" {
+		return nil
+	}
+
+	if len(def) > 0 {
+		if d.String(key, "") == "null" {
+			return &def[0]
+		}
+	}
+
+	if d.HasKey(key) {
+		return PtrInt64(d.Int(key))
+	}
+
+	return nil
+}
+
+func JsonToNullInt(d *djson.JSON, key string) null.Int {
+	return null.IntFromPtr(JsonToPtrInt(d, key))
+}
+
+func JsonToNullInt8(d *djson.JSON, key string) null.Int8 {
+	return null.Int8FromPtr(JsonToPtrInt8(d, key))
+}
+
+func JsonToNullInt16(d *djson.JSON, key string) null.Int16 {
+	return null.Int16FromPtr(JsonToPtrInt16(d, key))
+}
+func JsonToNullInt32(d *djson.JSON, key string) null.Int32 {
+	return null.Int32FromPtr(JsonToPtrInt32(d, key))
+}
+
+func JsonToNullInt64(d *djson.JSON, key string) null.Int64 {
+	return null.Int64FromPtr(JsonToPtrInt64(d, key))
+}
+
+func JsonToNullString(d *djson.JSON, key string) null.String {
+	return null.StringFromPtr(JsonToPtrStr(d, key))
+}
+
+func JsonToNullBool(d *djson.JSON, key string) null.Bool {
+	return null.BoolFromPtr(JsonToPtrBool(d, key))
 }
