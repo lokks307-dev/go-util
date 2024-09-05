@@ -346,39 +346,16 @@ func JsonStringToArray(ss string) *djson.JSON {
 }
 
 func JsonStringToStringSlice(ss string) []string {
-	dd := djson.New().Parse(ss)
-	if dd.IsArray() {
-		return djson.ArrayJsonToStringSlice(dd)
-	}
-	return []string{}
-}
-
-func JsonStringToIntSlice(ss string) []int {
-	dd := djson.New().Parse(ss)
-	if dd.IsArray() {
-		return djson.JsonToIntSlice(dd)
-	}
-	return []int{}
-}
-
-func JsonStringToInt64Slice(ss string) []int64 {
-	dd := djson.New().Parse(ss)
-	if dd.IsArray() {
-		return djson.JsonToInt64Slice(dd)
-	}
-	return []int64{}
-}
-
-func JsonStringToInt8Slice(ss string) []int8 {
-	res := make([]int8, 0)
+	res := make([]string, 0)
 	dd := djson.New().Parse(ss)
 	if dd.IsArray() {
 		dd.Seek()
 		for dd.Next() {
-			res = append(res, int8(dd.Scan().Int()))
+			res = append(res, dd.Scan().String())
 		}
 		return res
 	}
+
 	return res
 }
 
@@ -386,47 +363,197 @@ func JsonStringToInterfaceSlice(ss string) []interface{} {
 	res := make([]interface{}, 0)
 	dd := djson.New().Parse(ss)
 	if dd.IsArray() {
-		arr := djson.JsonToInt64Slice(dd)
-		for _, v := range arr {
-			res = append(res, v)
+		dd.Seek()
+		for dd.Next() {
+			res = append(res, dd.Scan().Interface())
 		}
+		return res
 	}
 
 	return res
 }
 
-func JsonStringToInt32Slice(ss string) []int32 {
+func JsonStringToIntegerSlice[T integers](ss string) []T {
+	res := make([]T, 0)
 	dd := djson.New().Parse(ss)
 	if dd.IsArray() {
-		res := []int32{}
 		dd.Seek()
 		for dd.Next() {
-			res = append(res, int32(dd.Scan().Int()))
+			res = append(res, T(dd.Scan().Int()))
 		}
 		return res
 	}
-	return []int32{}
+	return res
 }
 
-func JsonToUint64Slice(js *djson.JSON, key ...string) []uint64 {
+func JsonStringToIntSlice(ss string) []int {
+	return JsonStringToIntegerSlice[int](ss)
+}
+
+func JsonStringToInt8Slice(ss string) []int8 {
+	return JsonStringToIntegerSlice[int8](ss)
+}
+
+func JsonStringToInt16Slice(ss string) []int16 {
+	return JsonStringToIntegerSlice[int16](ss)
+}
+
+func JsonStringToInt32Slice(ss string) []int32 {
+	return JsonStringToIntegerSlice[int32](ss)
+}
+
+func JsonStringToInt64Slice(ss string) []int64 {
+	return JsonStringToIntegerSlice[int64](ss)
+}
+
+func JsonStringToUintSlice(ss string) []uint {
+	return JsonStringToIntegerSlice[uint](ss)
+}
+
+func JsonStringToUint8Slice(ss string) []uint8 {
+	return JsonStringToIntegerSlice[uint8](ss)
+}
+
+func JsonStringToUint16Slice(ss string) []uint16 {
+	return JsonStringToIntegerSlice[uint16](ss)
+}
+
+func JsonStringToUint32Slice(ss string) []uint32 {
+	return JsonStringToIntegerSlice[uint32](ss)
+}
+
+func JsonStringToUint64Slice(ss string) []uint64 {
+	return JsonStringToIntegerSlice[uint64](ss)
+}
+
+func JsonToStringSlice(js *djson.JSON, key ...string) []string {
+	return djson.JsonToStringSlice(js, key...)
+}
+
+func JsonToIntegerSlice[T integers](js *djson.JSON, key ...string) []T {
 	if js == nil || !js.IsArray() || js.Size() == 0 {
-		return []uint64{}
+		return []T{}
 	}
 
-	ss := make([]uint64, 0)
+	ss := make([]T, 0)
 	js.Seek()
 	if len(key) > 0 {
 		for js.Next() {
 			ec := js.Scan()
-			ss = append(ss, uint64(ec.Int(key[0])))
+			ss = append(ss, T(ec.Int(key[0])))
 		}
 	} else {
 		for js.Next() {
 			ec := js.Scan()
-			ss = append(ss, uint64(ec.Int()))
+			ss = append(ss, T(ec.Int()))
 		}
 	}
 	return ss
+}
+
+func JsonToIntSlice(js *djson.JSON, key ...string) []int {
+	return JsonToIntegerSlice[int](js, key...)
+}
+
+func JsonToInt8Slice(js *djson.JSON, key ...string) []int8 {
+	return JsonToIntegerSlice[int8](js, key...)
+}
+
+func JsonToInt16Slice(js *djson.JSON, key ...string) []int16 {
+	return JsonToIntegerSlice[int16](js, key...)
+}
+
+func JsonToInt326Slice(js *djson.JSON, key ...string) []int32 {
+	return JsonToIntegerSlice[int32](js, key...)
+}
+
+func JsonToInt64Slice(js *djson.JSON, key ...string) []int64 {
+	return JsonToIntegerSlice[int64](js, key...)
+}
+
+func JsonToUintSlice(js *djson.JSON, key ...string) []uint {
+	return JsonToIntegerSlice[uint](js, key...)
+}
+
+func JsonToUint8Slice(js *djson.JSON, key ...string) []uint8 {
+	return JsonToIntegerSlice[uint8](js, key...)
+}
+
+func JsonToUint16Slice(js *djson.JSON, key ...string) []uint16 {
+	return JsonToIntegerSlice[uint16](js, key...)
+}
+
+func JsonToUint32Slice(js *djson.JSON, key ...string) []uint32 {
+	return JsonToIntegerSlice[uint32](js, key...)
+}
+
+func JsonToUint64Slice(js *djson.JSON, key ...string) []uint64 {
+	return JsonToIntegerSlice[uint64](js, key...)
+}
+
+func JsonElementToIntegerSlice[T integers](js *djson.JSON, el string) []T {
+	if js == nil {
+		return []T{}
+	}
+
+	if el == "" {
+		return JsonToIntegerSlice[T](js)
+	}
+
+	if !js.IsArray(el) {
+		return []T{}
+	}
+
+	dd, _ := js.Array(el)
+	return JsonToIntegerSlice[T](dd)
+}
+
+func JsonElementToStringSlice(js *djson.JSON, el string) []string {
+	if js == nil {
+		return []string{}
+	}
+
+	if el == "" {
+		return JsonToStringSlice(js)
+	}
+
+	if !js.IsArray(el) {
+		return []string{}
+	}
+
+	dd, _ := js.Array(el)
+	return JsonToStringSlice(dd)
+}
+
+func JsonElementToIntSlice(js *djson.JSON, el string) []int {
+	return JsonElementToIntegerSlice[int](js, el)
+}
+func JsonElementToInt8Slice(js *djson.JSON, el string) []int8 {
+	return JsonElementToIntegerSlice[int8](js, el)
+}
+func JsonElementToInt16Slice(js *djson.JSON, el string) []int16 {
+	return JsonElementToIntegerSlice[int16](js, el)
+}
+func JsonElementToInt32Slice(js *djson.JSON, el string) []int32 {
+	return JsonElementToIntegerSlice[int32](js, el)
+}
+func JsonElementToInt64Slice(js *djson.JSON, el string) []int64 {
+	return JsonElementToIntegerSlice[int64](js, el)
+}
+func JsonElementToUntSlice(js *djson.JSON, el string) []uint {
+	return JsonElementToIntegerSlice[uint](js, el)
+}
+func JsonElementToUint8Slice(js *djson.JSON, el string) []uint8 {
+	return JsonElementToIntegerSlice[uint8](js, el)
+}
+func JsonElementToUint16Slice(js *djson.JSON, el string) []uint16 {
+	return JsonElementToIntegerSlice[uint16](js, el)
+}
+func JsonElementToUint32Slice(js *djson.JSON, el string) []uint32 {
+	return JsonElementToIntegerSlice[uint32](js, el)
+}
+func JsonElementToUint64Slice(js *djson.JSON, el string) []uint64 {
+	return JsonElementToIntegerSlice[uint64](js, el)
 }
 
 func RemoveDuplicatedTag(sliceList *djson.JSON) *djson.JSON {

@@ -1,6 +1,7 @@
 package mt
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -237,9 +238,8 @@ func ToStr(s interface{}) string {
 		if t.Valid {
 			return t.String
 		}
-		return ""
 	}
-	return ""
+	return fmt.Sprintf("%v", s)
 }
 
 func TrueOr[T any](t bool, a T, b T) T {

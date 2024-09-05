@@ -14,3 +14,11 @@ func TestSet(t *testing.T) {
 
 	fmt.Println(a.ToSlice())
 }
+
+func TestTemplateSet(t *testing.T) {
+
+	a := NewSet[string]()
+	a.Add("a", "b")
+	fmt.Println(a.IsIn("a"))
+	fmt.Println(a.ToSlice())
+}

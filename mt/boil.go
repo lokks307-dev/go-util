@@ -38,11 +38,19 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		assignWithEval(m, key, t, evalfunc)
 	case int8:
 		assignWithEval(m, key, t, evalfunc)
+	case int16:
+		assignWithEval(m, key, t, evalfunc)
+	case int32:
+		assignWithEval(m, key, t, evalfunc)
 	case int64:
 		assignWithEval(m, key, t, evalfunc)
 	case uint:
 		assignWithEval(m, key, t, evalfunc)
 	case uint8:
+		assignWithEval(m, key, t, evalfunc)
+	case uint16:
+		assignWithEval(m, key, t, evalfunc)
+	case uint32:
 		assignWithEval(m, key, t, evalfunc)
 	case uint64:
 		assignWithEval(m, key, t, evalfunc)
@@ -54,6 +62,14 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t != nil {
 			assignWithEval(m, key, *t, evalfunc)
 		}
+	case *int16:
+		if t != nil {
+			assignWithEval(m, key, *t, evalfunc)
+		}
+	case *int32:
+		if t != nil {
+			assignWithEval(m, key, *t, evalfunc)
+		}
 	case *int64:
 		if t != nil {
 			assignWithEval(m, key, *t, evalfunc)
@@ -62,7 +78,11 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t != nil {
 			assignWithEval(m, key, *t, evalfunc)
 		}
-	case *uint8:
+	case *uint16:
+		if t != nil {
+			assignWithEval(m, key, *t, evalfunc)
+		}
+	case *uint32:
 		if t != nil {
 			assignWithEval(m, key, *t, evalfunc)
 		}
@@ -70,9 +90,27 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t != nil {
 			assignWithEval(m, key, *t, evalfunc)
 		}
+	case float32:
+		assignWithEval(m, key, t, evalfunc)
+	case *float32:
+		if t != nil {
+			assignWithEval(m, key, *t, evalfunc)
+		}
+	case float64:
+		assignWithEval(m, key, t, evalfunc)
+	case *float64:
+		if t != nil {
+			assignWithEval(m, key, *t, evalfunc)
+		}
 	case string:
 		assignWithEval(m, key, t, evalfunc)
 	case *string:
+		if t != nil {
+			assignWithEval(m, key, *t, evalfunc)
+		}
+	case bool:
+		assignWithEval(m, key, t, evalfunc)
+	case *bool:
 		if t != nil {
 			assignWithEval(m, key, *t, evalfunc)
 		}
@@ -90,6 +128,14 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t.Valid {
 			assignWithEval(m, key, t.Int8, evalfunc)
 		}
+	case null.Int16:
+		if t.Valid {
+			assignWithEval(m, key, t.Int16, evalfunc)
+		}
+	case null.Int32:
+		if t.Valid {
+			assignWithEval(m, key, t.Int32, evalfunc)
+		}
 	case null.Int64:
 		if t.Valid {
 			assignWithEval(m, key, t.Int64, evalfunc)
@@ -102,6 +148,14 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t.Valid {
 			assignWithEval(m, key, t.Uint8, evalfunc)
 		}
+	case null.Uint16:
+		if t.Valid {
+			assignWithEval(m, key, t.Uint16, evalfunc)
+		}
+	case null.Uint32:
+		if t.Valid {
+			assignWithEval(m, key, t.Uint32, evalfunc)
+		}
 	case null.Uint64:
 		if t.Valid {
 			assignWithEval(m, key, t.Uint64, evalfunc)
@@ -110,6 +164,7 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t.Valid {
 			assignWithEval(m, key, t.Time, evalfunc)
 		}
+
 	case NullMap:
 		if t.Valid {
 

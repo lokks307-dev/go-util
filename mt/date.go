@@ -104,7 +104,7 @@ func TimeToMinInt(t time.Time, loc *time.Location) int64 {
 		loc = LocalLoc
 	}
 
-	mint, err := strconv.ParseInt(t.Format("200601021504"), 10, 64)
+	mint, err := strconv.ParseInt(t.In(loc).Format("200601021504"), 10, 64)
 	if err != nil {
 		return 0
 	}
