@@ -8,7 +8,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
-// models.M (in sqlboiler) is equal to map[string]interface{}
+// models.M (in sqlboiler) is equal to map[string]any
 
 func OrderByCol(colName string, isAsc bool) qm.QueryMod {
 	if isAsc {
@@ -17,7 +17,7 @@ func OrderByCol(colName string, isAsc bool) qm.QueryMod {
 	return qm.OrderBy(colName + " DESC")
 }
 
-func assignWithEval[T any](m map[string]interface{}, key string, v T, ev func(c interface{}) bool) {
+func assignWithEval[T any](m map[string]any, key string, v T, ev func(c any) bool) {
 	if ev == nil {
 		m[key] = v
 	} else {
@@ -27,8 +27,8 @@ func assignWithEval[T any](m map[string]interface{}, key string, v T, ev func(c 
 	}
 }
 
-func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...func(c interface{}) bool) map[string]interface{} {
-	var evalfunc func(c interface{}) bool
+func AppendBoilCols(m map[string]any, key string, v any, ev ...func(c any) bool) map[string]any {
+	var evalfunc func(c any) bool
 	if len(ev) == 1 {
 		evalfunc = ev[0]
 	}
@@ -164,11 +164,6 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 		if t.Valid {
 			assignWithEval(m, key, t.Time, evalfunc)
 		}
-
-	case NullMap:
-		if t.Valid {
-
-		}
 	case *djson.JSON:
 		if t != nil {
 			assignWithEval(m, key, t.ToString(), evalfunc)
@@ -178,7 +173,7 @@ func AppendBoilCols(m map[string]interface{}, key string, v interface{}, ev ...f
 	return m
 }
 
-func UpdateValueAllowEmpty(vv interface{}, opt *djson.JSON, key string) bool {
+func UpdateValueAllowEmpty(vv any, opt *djson.JSON, key string) bool {
 	if vv == nil || opt == nil || key == "" {
 		return false
 	}
@@ -289,7 +284,7 @@ func UpdateValueAllowEmpty(vv interface{}, opt *djson.JSON, key string) bool {
 	return false
 }
 
-func UpdateValueNonEmpty(vv interface{}, opt *djson.JSON, key string) bool {
+func UpdateValueNonEmpty(vv any, opt *djson.JSON, key string) bool {
 	if vv == nil || opt == nil || key == "" {
 		return false
 	}

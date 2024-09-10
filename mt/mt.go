@@ -7,7 +7,7 @@ import (
 	"github.com/volatiletech/null/v8"
 )
 
-func HasEmptyValue(vv ...interface{}) bool {
+func HasEmptyValue(vv ...any) bool {
 	if len(vv) == 0 {
 		return false
 	}

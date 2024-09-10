@@ -26,7 +26,7 @@ func MysqlRealEscapeString(value string) string {
 	return sb.String()
 }
 
-func ToSqlValStr(sa ...interface{}) string {
+func ToSqlValStr(sa ...any) string {
 	contents := make([]string, 0)
 
 	for _, ea := range sa {
@@ -193,7 +193,7 @@ func OrderByString(columnName, order string) string {
 	return query
 }
 
-func CancatParams(in []interface{}) string {
+func CancatParams(in []any) string {
 	ret := []string{}
 
 	for _, v := range in {
@@ -206,7 +206,7 @@ func CancatParams(in []interface{}) string {
 	return strings.Join(ret, ",")
 }
 
-func GetBulkInsertQuery(tableName string, cols []string, vals [][]interface{}) string {
+func GetBulkInsertQuery(tableName string, cols []string, vals [][]any) string {
 	if tableName == "" || len(cols) == 0 || len(vals) == 0 {
 		return ""
 	}

@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func StringSliceToAnySlice(ss []string) []interface{} {
-	is := make([]interface{}, len(ss))
+func StringSliceToAnySlice(ss []string) []any {
+	is := make([]any, len(ss))
 	for i, v := range ss {
 		is[i] = MysqlRealEscapeString(v)
 	}
@@ -16,8 +16,8 @@ func StringSliceToAnySlice(ss []string) []interface{} {
 	return is
 }
 
-func IntSliceToAnySlice[T integers](ss []T) []interface{} {
-	is := make([]interface{}, len(ss))
+func IntSliceToAnySlice[T integers](ss []T) []any {
+	is := make([]any, len(ss))
 	for i, v := range ss {
 		is[i] = v
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/volatiletech/null/v8"
 )
 
-func AddIfNotEmptyArray(dst *djson.JSON, key string, v interface{}) {
+func AddIfNotEmptyArray(dst *djson.JSON, key string, v any) {
 	if dst == nil || key == "" {
 		return
 	}
@@ -36,7 +36,7 @@ func AddIfNotEmptyArray(dst *djson.JSON, key string, v interface{}) {
 	}
 }
 
-func AddIfNotEmpty(dst *djson.JSON, key string, v interface{}) {
+func AddIfNotEmpty(dst *djson.JSON, key string, v any) {
 	if dst == nil || key == "" {
 		return
 	}
@@ -177,7 +177,7 @@ func UpdateValuesIfExist(dst *djson.JSON, src *djson.JSON, keys ...string) {
 	}
 }
 
-func UpdateNullIfNotEmpty(dst interface{}, src *djson.JSON, key string, allowEmpty ...bool) bool {
+func UpdateNullIfNotEmpty(dst any, src *djson.JSON, key string, allowEmpty ...bool) bool {
 	if dst == nil || src == nil || key == "" || !src.HasKey(key) {
 		return false
 	}
@@ -236,7 +236,7 @@ func CheckMask[T integers](s T, v T) bool {
 	return s&v != 0
 }
 
-func UpdateJsonIfValidNull(dst *djson.JSON, key string, src interface{}, allow ...int8) bool {
+func UpdateJsonIfValidNull(dst *djson.JSON, key string, src any, allow ...int8) bool {
 	if src == nil || dst == nil || key == "" {
 		return false
 	}
@@ -359,8 +359,8 @@ func JsonStringToStringSlice(ss string) []string {
 	return res
 }
 
-func JsonStringToInterfaceSlice(ss string) []interface{} {
-	res := make([]interface{}, 0)
+func JsonStringToInterfaceSlice(ss string) []any {
+	res := make([]any, 0)
 	dd := djson.New().Parse(ss)
 	if dd.IsArray() {
 		dd.Seek()

@@ -11,7 +11,7 @@ func Ptr[T any](v T) *T {
 	return &v
 }
 
-func NullToInt64(v interface{}) (int64, bool) {
+func NullToInt64(v any) (int64, bool) {
 	var vv int64
 	switch x := v.(type) {
 	case null.Int:
@@ -71,7 +71,7 @@ func NullToInt64(v interface{}) (int64, bool) {
 	return vv, true
 }
 
-func AnyToInt64(v interface{}) (int64, bool) {
+func AnyToInt64(v any) (int64, bool) {
 	var vv int64
 
 	switch v.(type) {
@@ -106,7 +106,7 @@ func AnyToInt64(v interface{}) (int64, bool) {
 	return vv, true
 }
 
-func AnyToFloat64(v interface{}) (float64, bool) {
+func AnyToFloat64(v any) (float64, bool) {
 	var vv float64
 
 	switch t := v.(type) {
@@ -134,7 +134,7 @@ func AnyToFloat64(v interface{}) (float64, bool) {
 	return vv, true
 }
 
-func PtrInt64(v interface{}) *int64 {
+func PtrInt64(v any) *int64 {
 	vv, ok := AnyToInt64(v)
 	if !ok {
 		return nil
@@ -143,7 +143,7 @@ func PtrInt64(v interface{}) *int64 {
 	return &vv
 }
 
-func PtrInt32(v interface{}) *int32 {
+func PtrInt32(v any) *int32 {
 	vv, ok := AnyToInt64(v)
 	if !ok {
 		return nil
@@ -153,7 +153,7 @@ func PtrInt32(v interface{}) *int32 {
 	return &vx
 }
 
-func PtrInt16(v interface{}) *int16 {
+func PtrInt16(v any) *int16 {
 	vv, ok := AnyToInt64(v)
 	if !ok {
 		return nil
@@ -163,7 +163,7 @@ func PtrInt16(v interface{}) *int16 {
 	return &vx
 }
 
-func PtrInt8(v interface{}) *int8 {
+func PtrInt8(v any) *int8 {
 	vv, ok := AnyToInt64(v)
 	if !ok {
 		return nil
@@ -173,7 +173,7 @@ func PtrInt8(v interface{}) *int8 {
 	return &vx
 }
 
-func PtrInt(v interface{}) *int {
+func PtrInt(v any) *int {
 	vv, ok := AnyToInt64(v)
 	if !ok {
 		return nil
@@ -183,7 +183,7 @@ func PtrInt(v interface{}) *int {
 	return &vx
 }
 
-func PtrFloat32(v interface{}) *float32 {
+func PtrFloat32(v any) *float32 {
 	vv, ok := AnyToFloat64(v)
 	if !ok {
 		return nil
@@ -192,7 +192,7 @@ func PtrFloat32(v interface{}) *float32 {
 	return &vx
 }
 
-func PtrFloat64(v interface{}) *float64 {
+func PtrFloat64(v any) *float64 {
 	vv, ok := AnyToFloat64(v)
 	if !ok {
 		return nil
@@ -200,7 +200,7 @@ func PtrFloat64(v interface{}) *float64 {
 	return &vv
 }
 
-func PtrStr(v interface{}) *string {
+func PtrStr(v any) *string {
 	switch t := v.(type) {
 	case *string:
 		return t
@@ -216,7 +216,7 @@ func PtrStr(v interface{}) *string {
 	return nil
 }
 
-func PtrBool(v interface{}) *bool {
+func PtrBool(v any) *bool {
 	switch t := v.(type) {
 	case *bool:
 		return t
@@ -314,27 +314,27 @@ func PtrIntNonZeroOrNil[T integers](a T) *T {
 	return &a
 }
 
-func PtrToInt64(s interface{}) int64 {
+func PtrToInt64(s any) int64 {
 	v, _ := AnyToInt64(s)
 	return v
 }
 
-func PtrToInt32(s interface{}) int32 {
+func PtrToInt32(s any) int32 {
 	v, _ := AnyToInt64(s)
 	return int32(v)
 }
 
-func PtrToInt(s interface{}) int {
+func PtrToInt(s any) int {
 	v, _ := AnyToInt64(s)
 	return int(v)
 }
 
-func PtrToFloat64(s interface{}) float64 {
+func PtrToFloat64(s any) float64 {
 	v, _ := AnyToFloat64(s)
 	return v
 }
 
-func PtrToFloat32(s interface{}) float32 {
+func PtrToFloat32(s any) float32 {
 	v, _ := AnyToFloat64(s)
 	return float32(v)
 }

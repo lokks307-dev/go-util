@@ -8,7 +8,7 @@ import (
 	gov "github.com/asaskevich/govalidator"
 )
 
-func GetStringBase(v interface{}) (string, bool) {
+func GetStringBase(v any) (string, bool) {
 	if v == nil {
 		return "nil", true
 	}
@@ -24,7 +24,7 @@ func GetStringBase(v interface{}) (string, bool) {
 	return "", false
 }
 
-func GetBoolBase(v interface{}) (bool, bool) {
+func GetBoolBase(v any) (bool, bool) {
 	if IsInTypes(v, "int", "uint", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64") {
 		intVal, _ := gov.ToInt(v)
 		if intVal == 0 {
@@ -51,7 +51,7 @@ func GetBoolBase(v interface{}) (bool, bool) {
 	return false, false
 }
 
-func GetFloatBase(v interface{}) (float64, bool) {
+func GetFloatBase(v any) (float64, bool) {
 	if floatVal, err := gov.ToFloat(v); err != nil {
 		return 0, false
 	} else {
@@ -59,7 +59,7 @@ func GetFloatBase(v interface{}) (float64, bool) {
 	}
 }
 
-func GetIntBase(v interface{}) (int64, bool) {
+func GetIntBase(v any) (int64, bool) {
 	if intVal, err := gov.ToInt(v); err != nil {
 		return 0, false
 	} else {
@@ -67,33 +67,33 @@ func GetIntBase(v interface{}) (int64, bool) {
 	}
 }
 
-func IsBaseType(v interface{}) bool {
+func IsBaseType(v any) bool {
 	return IsInTypes(v, "string", "bool", "int", "uint", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "float32", "float64")
 }
 
-func IsIntType(v interface{}) bool {
+func IsIntType(v any) bool {
 	return IsInTypes(v, "int", "uint", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64")
 }
 
-func IsFloatType(v interface{}) bool {
+func IsFloatType(v any) bool {
 	return IsInTypes(v, "float32", "float64")
 }
 
-func IsBoolType(v interface{}) bool {
+func IsBoolType(v any) bool {
 	return IsInTypes(v, "bool")
 }
 
-func IsStringType(v interface{}) bool {
+func IsStringType(v any) bool {
 	return IsInTypes(v, "string")
 }
 
-func IsSliceType(v interface{}) bool {
+func IsSliceType(v any) bool {
 	return IsInTypes(v,
 		"[]string", "[]bool", "[]int", "[]uint", "[]int8", "[]uint8", "[]int16", "[]uint16", "[]int32", "[]uint32", "[]int64", "[]uint64", "[]float32", "[]float64",
 		"[]null.String", "[]null.Bool", "[]null.Int", "[]null.Uint", "[]null.Int8", "[]null.Uint8", "[]null.Int16", "[]null.Uint16", "[]null.Int32", "[]null.Uint32", "[]null.Int64", "[]null.Uint64", "[]null.Float32", "[]null.Float64")
 }
 
-func IsInTypes(v interface{}, types ...string) bool {
+func IsInTypes(v any, types ...string) bool {
 	var vTypeStr string
 	if v == nil {
 		vTypeStr = "nil"

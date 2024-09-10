@@ -212,14 +212,14 @@ func (e *ecbEncrypter) CryptBlocks(dst, src []byte) {
 	}
 }
 
-func Sha256(b ...interface{}) string {
+func Sha256(b ...any) string {
 	bb := bytesbuilder.NewBuilder()
 	bb.Append(b...)
 	hash := sha256.Sum256(bb.GetBytes())
 	return hex.EncodeToString(hash[:])
 }
 
-func Blake3(b ...interface{}) string {
+func Blake3(b ...any) string {
 	bb := bytesbuilder.NewBuilder()
 	bb.Append(b...)
 	hash := blake3.Sum256(bb.GetBytes())

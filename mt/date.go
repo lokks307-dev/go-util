@@ -312,8 +312,8 @@ func TimeSliceToInt64Slice(tt []time.Time) []int64 {
 	return ts
 }
 
-func ToInterfaceSlice[T any](tt []T) []interface{} {
-	si := make([]interface{}, 0)
+func ToInterfaceSlice[T any](tt []T) []any {
+	si := make([]any, 0)
 	for _, t := range tt {
 		si = append(si, t)
 	}

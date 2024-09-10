@@ -7,7 +7,7 @@ import (
 
 type TaskTimeItem struct {
 	Timestamp int64
-	Result    interface{}
+	Result    any
 }
 
 type TaskTimeMap struct {
@@ -22,7 +22,7 @@ func NewTaskTimeMap() *TaskTimeMap {
 	return m
 }
 
-func (m *TaskTimeMap) GetTaskWithinTime(taskKey, prefix string, wt int64) (interface{}, bool) {
+func (m *TaskTimeMap) GetTaskWithinTime(taskKey, prefix string, wt int64) (any, bool) {
 	m.TimeMapMutex.RLock()
 	defer m.TimeMapMutex.RUnlock()
 
@@ -41,7 +41,7 @@ func (m *TaskTimeMap) GetTaskWithinTime(taskKey, prefix string, wt int64) (inter
 	}
 }
 
-func (m *TaskTimeMap) SetTask(taskKey, prefix string, taskResult interface{}) {
+func (m *TaskTimeMap) SetTask(taskKey, prefix string, taskResult any) {
 	m.TimeMapMutex.Lock()
 	defer m.TimeMapMutex.Unlock()
 

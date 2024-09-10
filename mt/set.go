@@ -14,7 +14,7 @@ func NewIntSet() *IntSet {
 	}
 }
 
-func (m *IntSet) Add(vv ...interface{}) {
+func (m *IntSet) Add(vv ...any) {
 	for _, v := range vv {
 		vit, ok := AnyToInt64(v)
 		if ok {

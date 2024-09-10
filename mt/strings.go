@@ -194,7 +194,7 @@ func ToInt64(s string, dd ...int64) int64 {
 	}
 }
 
-func IsEmptyStr(v interface{}) bool {
+func IsEmptyStr(v any) bool {
 	switch t := v.(type) {
 	case *string:
 		if t != nil && len(*t) > 0 {
@@ -225,7 +225,7 @@ func IsContain(dd string, vv ...string) bool {
 	return false
 }
 
-func ToStr(s interface{}) string {
+func ToStr(s any) string {
 	switch t := s.(type) {
 	case string:
 		return t
@@ -286,7 +286,7 @@ func UnescapeUnicodeCharactersInJSON(raw string) string {
 	return str
 }
 
-func EmptyOr(aa ...interface{}) string {
+func EmptyOr(aa ...any) string {
 	r := ""
 
 	for _, a := range aa {

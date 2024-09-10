@@ -1,20 +1,17 @@
 package mt
 
+import "slices"
+
 func FindIndex[T comparable](slice []T, item T) int {
-	for i := range slice {
-		if slice[i] == item {
-			return i
-		}
-	}
-	return -1
+	return slices.Index(slice, item)
 }
 
 func FindIndexStringSlice(slice []string, item string) int {
-	return FindIndex(slice, item)
+	return slices.Index(slice, item)
 }
 
 func FindIndexInt64Slice(slice []int64, item int64) int {
-	return FindIndex(slice, item)
+	return slices.Index(slice, item)
 }
 
 func FiltOutInt64Slice(slice []int64, item int64) []int64 {
@@ -29,17 +26,7 @@ func FiltOutInt64Slice(slice []int64, item int64) []int64 {
 }
 
 func IsSameOrderSlice[T comparable](a, b []T) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i := 0; i < len(a); i++ {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-
-	return true
+	return slices.Equal(a, b)
 }
 
 func IsSameSlice[T comparable](a, b []T) bool {
@@ -47,25 +34,18 @@ func IsSameSlice[T comparable](a, b []T) bool {
 		return false
 	}
 
-	aa := make(map[T]bool)
-
+	setA := NewSet[T]()
 	for i := range a {
-		aa[a[i]] = false
+		setA.Add(a[i])
 	}
 
 	for j := range b {
-		if _, ok := aa[b[j]]; ok {
-			aa[b[j]] = true
+		if setA.IsIn(b[j]) {
+			setA.Remove(b[j])
 		} else {
 			return false
 		}
 	}
 
-	for _, k := range aa {
-		if !k {
-			return false
-		}
-	}
-
-	return true
+	return setA.Size() == 0
 }

@@ -3,22 +3,15 @@ package mt
 import (
 	"math"
 	"reflect"
+	"slices"
 )
 
-func Max[T numbers](a, b T) T {
-	if a > b {
-		return a
-	}
-
-	return b
+func Max[T numbers](a ...T) T {
+	return slices.Max(a)
 }
 
-func Min[T numbers](a, b T) T {
-	if a > b {
-		return b
-	}
-
-	return a
+func Min[T numbers](a ...T) T {
+	return slices.Min(a)
 }
 
 func Pow[T integers](base, exp T) T {
@@ -41,7 +34,7 @@ func Divide[T integers](base, divider T) (T, T) {
 	return base / divider, base % divider
 }
 
-func SumInt64(tt ...interface{}) int64 {
+func SumInt64(tt ...any) int64 {
 	var totalInt int64
 	var totalFloat float64
 
@@ -59,7 +52,7 @@ func SumInt64(tt ...interface{}) int64 {
 	return totalInt + int64(totalFloat)
 }
 
-func SumInt(tt ...interface{}) int {
+func SumInt(tt ...any) int {
 	return int(SumInt64(tt...))
 }
 

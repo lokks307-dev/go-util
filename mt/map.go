@@ -10,10 +10,9 @@ func MapToSlice[T comparable](ss map[T]bool) []T {
 }
 
 func GetUniqueSlice[T comparable](ss []T) []T {
-	v := make(map[T]bool)
+	set := NewSet[T]()
 	for _, s := range ss {
-		v[s] = true
+		set.Add(s)
 	}
-
-	return MapToSlice(v)
+	return set.ToSlice()
 }

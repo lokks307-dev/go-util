@@ -65,7 +65,7 @@ func IsIn[T comparable](v T, opts ...T) bool {
 	return false
 }
 
-func IsInEnum(x interface{}, c interface{}) bool {
+func IsInEnum(x any, c any) bool {
 
 	xx := reflect.ValueOf(x)
 	cc := reflect.ValueOf(c)
