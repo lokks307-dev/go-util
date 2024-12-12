@@ -13,8 +13,8 @@ require (
 	github.com/subchen/go-trylock/v2 v2.0.0
 	github.com/volatiletech/null/v8 v8.1.2
 	github.com/volatiletech/sqlboiler/v4 v4.16.2
-	golang.org/x/crypto v0.25.0
-	golang.org/x/sys v0.22.0
+	golang.org/x/crypto v0.31.0
+	golang.org/x/sys v0.28.0
 	lukechampine.com/blake3 v1.3.0
 	software.sslmate.com/src/go-pkcs12 v0.4.0
 )
